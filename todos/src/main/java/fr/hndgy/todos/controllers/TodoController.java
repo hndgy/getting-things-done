@@ -1,5 +1,6 @@
 package fr.hndgy.todos.controllers;
 
+import fr.hndgy.todos.commands.todo.CompleteTodo;
 import fr.hndgy.todos.commands.todo.CreateTodo;
 import fr.hndgy.todos.commands.todo.UpdateTodo;
 import fr.hndgy.todos.commands.todo.UpdateTodoProject;
@@ -55,9 +56,15 @@ public class TodoController {
         return ResponseEntity.created(newRessourceUri).body(newTodo);
     }
 
-    @PutMapping("/{id}/project")
-    public ResponseEntity<Object> updateTodo(@PathVariable Long id ,@RequestBody UpdateTodoProject updateTodoProject) throws TodoNotFoundException, ProjectNotFoundException {
-        todoService.updateTodoProject(id, updateTodoProject.getIdProject());
+    @PutMapping("/{id}/assignProject")
+    public ResponseEntity<Object> updateTodoProject(@PathVariable Long id ,@RequestBody UpdateTodoProject updateTodoProject) throws TodoNotFoundException, ProjectNotFoundException {
+        todoService.assignProject(id, updateTodoProject.getIdProject());
+        return ResponseEntity.noContent().build();
+    } 
+    
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<Object> updateTodoCompleted(@PathVariable Long id ,@RequestBody CompleteTodo completeTodo) throws TodoNotFoundException, ProjectNotFoundException {
+        todoService.completeTodo(id, completeTodo.isCompleted());
         return ResponseEntity.noContent().build();
     }
 

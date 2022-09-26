@@ -84,10 +84,17 @@ public class TodoService {
         return this.todoRepository.findById(id).orElseThrow(TodoNotFoundException::new);
     }
 
-    public void updateTodoProject(Long id, Long projectId) throws TodoNotFoundException, ProjectNotFoundException {
+    public void assignProject(Long id, Long projectId) throws TodoNotFoundException, ProjectNotFoundException {
         var todo = this.todoRepository.findById(id).orElseThrow(TodoNotFoundException::new);
         var project = projectRepository.findById(id).orElseThrow(ProjectNotFoundException::new);
         todo.setProject(project);
+        todoRepository.save(todo);
+    }
+
+
+    public void completeTodo(Long id, boolean completed) throws TodoNotFoundException {
+        var todo = this.todoRepository.findById(id).orElseThrow(TodoNotFoundException::new);
+        todo.setCompleted(completed);
         todoRepository.save(todo);
     }
 }

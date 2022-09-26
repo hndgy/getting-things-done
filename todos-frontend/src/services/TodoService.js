@@ -48,10 +48,18 @@ class TodoService{
     }
 
     updateTodoProject(id, idProject){
-        return fetch(`${API_URL}/todo/${id}/project`,{
+        return fetch(`${API_URL}/todo/${id}/assignProject`,{
             method: 'PUT',
             headers : authHeader(),
-            body : JSON.stringify({idProject : idProject})
+            body : JSON.stringify({idProject})
+        })
+    }  
+    
+    complete(id, isCompleted){
+        return fetch(`${API_URL}/todo/${id}/complete`,{
+            method: 'PUT',
+            headers : authHeader(),
+            body : JSON.stringify({isCompleted})
         })
     }
 

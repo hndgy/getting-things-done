@@ -28,7 +28,8 @@ public class Todo {
     private String description;
     private LocalDateTime dateCreated;
     private LocalDateTime dueDate;
-    private boolean isCompleted;
+    @Column(nullable = false)
+    private boolean isCompleted = false;
     private boolean isPriority;
 
     @ManyToOne

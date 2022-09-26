@@ -21,14 +21,11 @@ function Header({ setIsAuth }) {
           </Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="d-flex justify-content-end">
-           
             <Button
               onClick={() => setShowModal(true)}
               className="btn-sm "
               variant="dark"
             >Déconnecter</Button>
-
-    
           </Navbar.Collapse>
         </Container>
       </Navbar>

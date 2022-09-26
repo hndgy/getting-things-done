@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Badge, Button, Card, Form, InputGroup, ListGroup, Spinner } from 'react-bootstrap';
+import FormCheckInput from 'react-bootstrap/esm/FormCheckInput';
 import { Link } from 'react-router-dom';
 import ProjectService from '../services/ProjectService';
 import TodoService from '../services/TodoService';
@@ -16,8 +17,9 @@ function BoiteReception() {
             }
         );
         ProjectService.getAllProjects().then(resp=>resp.json())
-            .then( data => setListProjects(data))
-    },[])
+              .then( data => setListProjects(data))
+    }, []);
+    
 
     const [newInput, setNewInput] = useState("");
     const [priorityCheck, setPriorityCheck] = useState(false);
@@ -69,6 +71,17 @@ function BoiteReception() {
         },1500)
 
     }
+
+    const handleChangeComplete = (ev, id) => {
+        const checked = ev.target.checked;
+        TodoService.complete(id, checked).then(()=>{
+            if(checked){
+                setListEntrants(listEntrants.filter(x => x.id !== id))
+            }
+        });
+    }
+
+
   return (
     <>
      <InputGroup className="mb-3">
@@ -86,7 +99,7 @@ function BoiteReception() {
         <Card className="mt-5">
         <Card.Header>
             <Card.Title>Boîte de réception 📨 </Card.Title>
-            <Link  to="/review" className="btn btn-sm btn-outline-dark"> Faire la revue </Link>
+            <Link  to="/todos" className="btn btn-sm btn-outline-dark"> Tâches à faire </Link>
         </Card.Header>
 
             <Card.Body>
@@ -95,6 +108,7 @@ function BoiteReception() {
                 (e) => {
                     return (
                         <ListGroup.Item key={e.id}>
+                            <FormCheckInput onChange={(ev) => handleChangeComplete(ev,e.id)}/>
                         {e.priority &&
                             <Badge bg='danger' >Priorité</Badge>
                         }
