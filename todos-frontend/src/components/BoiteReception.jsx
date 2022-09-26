@@ -63,12 +63,10 @@ function BoiteReception() {
         .catch(err => console.log(err))
     }
     const handleChangeProject = (evt,idTodo) => {
-        setTimeout(() => {
-            TodoService.updateTodoProject(idTodo, evt.target.value)
-            .then(() => {
-                setListEntrants(listEntrants.filter(x => x.id !== idTodo))
-            }).catch((err) => alert(err));
-        },1500)
+        TodoService.updateTodoProject(idTodo, evt.target.value)
+        .then(() => {
+            setListEntrants(listEntrants.filter(x => x.id !== idTodo))
+        }).catch((err) => alert(err));
 
     }
 

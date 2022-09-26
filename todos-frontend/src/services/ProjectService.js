@@ -10,6 +10,14 @@ class ProjectService{
             headers: authHeader()
         });
     }
+
+    create(projectName){
+        return fetch(`${API_URL}/project/`,{
+            method : "POST",
+            headers : authHeader(),
+            body : JSON.stringify({name : projectName})
+        });
+    }
 }
 
 export default new ProjectService();

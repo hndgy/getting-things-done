@@ -46,6 +46,7 @@ public class TodoService {
         return todoRepository.findByDueDateIsNotNullAndOwnerAndOwner(mail);
     }
 
+    @Transactional
     public Todo createTodo(CreateTodo createTodo, String mailCreator) throws UserNotFoundException {
         Todo todo = new Todo();
 
@@ -64,6 +65,7 @@ public class TodoService {
         return todo;
     }
 
+    @Transactional
     public void updateTodo(Long id, UpdateTodo updateTodo) throws TodoNotFoundException {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(TodoNotFoundException::new);
@@ -75,6 +77,7 @@ public class TodoService {
 
     }
 
+    @Transactional
     public void removeTodo(Long id) throws TodoNotFoundException {
         todoRepository.findById(id).orElseThrow(TodoNotFoundException::new);
         todoRepository.deleteById(id);
@@ -84,6 +87,7 @@ public class TodoService {
         return this.todoRepository.findById(id).orElseThrow(TodoNotFoundException::new);
     }
 
+    @Transactional
     public void assignProject(Long id, Long projectId) throws TodoNotFoundException, ProjectNotFoundException {
         var todo = this.todoRepository.findById(id).orElseThrow(TodoNotFoundException::new);
         var project = projectRepository.findById(id).orElseThrow(ProjectNotFoundException::new);
@@ -92,6 +96,7 @@ public class TodoService {
     }
 
 
+    @Transactional
     public void completeTodo(Long id, boolean completed) throws TodoNotFoundException {
         var todo = this.todoRepository.findById(id).orElseThrow(TodoNotFoundException::new);
         todo.setCompleted(completed);

@@ -7,6 +7,7 @@ import fr.hndgy.todos.services.ProjectService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,9 +31,9 @@ public class ProjectController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Project> addProject(CreateProject project, Principal principal) throws UserNotFoundException {
+    public ResponseEntity<Project> addProject(@RequestBody CreateProject project, Principal principal) throws UserNotFoundException {
         return ResponseEntity.ok(
-            projectService.addProject(project, principal.getName())
+            projectService.addProject(project.getName(), principal.getName())
         );
     }
 }

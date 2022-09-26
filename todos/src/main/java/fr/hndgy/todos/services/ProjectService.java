@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ProjectService {
     private final ProjectRepository projectRepository;
@@ -25,11 +27,12 @@ public class ProjectService {
         return projectRepository.findAllByUser(email);
     }
 
-    public Project addProject(CreateProject createProject, String email) throws UserNotFoundException {
+    @Transactional
+    public Project addProject(String projectName, String email) throws UserNotFoundException {
         var project = new Project();
-        project.setName(createProject.getName());
+        project.setName(projectName);
         project.setCreatedBy(
-            userRepository.findByEmail(email).orElseThrow(()-> new UserNotFoundException())
+            userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new)
         );
         return projectRepository.save(project);
     }

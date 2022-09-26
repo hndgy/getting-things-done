@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { Badge, Button, ListGroup, Row, Spinner } from 'react-bootstrap'
+import { Badge, Button, Form, InputGroup, ListGroup, Row, Spinner } from 'react-bootstrap'
 import FormCheckInput from 'react-bootstrap/esm/FormCheckInput';
 import ProjectService from '../services/ProjectService';
 import TodoService from '../services/TodoService';
@@ -10,8 +10,9 @@ function Projects() {
 
 
     const [listTodosAsap, setListTodosAsap] = useState([]);
-    const [listProjects, setListProjects] = useState([])
+    const [listProjects, setListProjects] = useState([]);
 
+    const [newInput, setNewInput] = useState("");
     useEffect(() => {
       TodoService.getAsap().then(r => r.json()).then(data => {
         setListTodosAsap(data);
@@ -42,10 +43,40 @@ function Projects() {
         });
     }
 
+    const handleAddProject = () => {
+
+        if (newInput !== ""){
+            console.log(newInput)
+            ProjectService.create(newInput).then(r => r.json())
+            .then(data => {
+                const newListProjects = [...listProjects];
+                newListProjects.push(data);
+                setListProjects(newListProjects);
+                setNewInput("");
+            })
+        }
+    }
+    const handleInputChange = (e) => {
+        setNewInput(e.target.value)
+    }
+    const handleKeyUp = (e) => {
+        if (e.keyCode === 13) {
+            handleAddProject();
+        }
+    }
+
   return (
     <Row className="mt-4">
         <h1>Projets</h1>
-        {listProjects.map( p =>
+        <InputGroup className="mb-3">
+            <Form.Control placeholder="💡 Une idée ? Un truc à faire ?"
+            value={newInput}
+            type="text" onChange={handleInputChange}
+            onKeyUp={handleKeyUp} />
+       
+       <Button onClick={handleAddProject} variant="success">+</Button>
+      </InputGroup>
+      {listProjects.map( p =>
             <div key={p.id}>
                 <h3>
                     {p.name}
@@ -55,7 +86,7 @@ function Projects() {
             {listTodosAsap && listTodosAsap.filter( x => x.projectId === p.id).map(
                 (e) => {
                     return (
-                        <ListGroup.Item key={e.id}>
+                        <ListGroup.Item>
                             <FormCheckInput onChange={(ev) => handleChangeComplete(ev,e.id)} />
                         {e.priority &&
                             <Badge bg='danger' >Priorité</Badge>

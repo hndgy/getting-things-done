@@ -18,7 +18,7 @@ public interface TodoRepository extends JpaRepository<Todo,Long> {
 
     @Query("SELECT t " +
             "FROM Todo t JOIN AppUser u ON t.createdBy = u " +
-            "WHERE u.email = :email AND t.project is null " +
+            "WHERE u.email = :email AND t.project is null AND t.isCompleted = false " +
             "ORDER BY t.dateCreated DESC")
     List<Todo> findByProjectNullAndOwner(String email);
 
